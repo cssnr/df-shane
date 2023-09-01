@@ -43,3 +43,4 @@ jobs:
           name: "df-shane"
           file: "docker-compose-swarm.yaml"
           env_file: "${{ env.ENV_FILE }}"
+          ssh_key: "${{ secrets.DOCKER_SSH_KEY }}"
