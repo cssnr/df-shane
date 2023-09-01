@@ -50,9 +50,9 @@ jobs:
           ssh-key: ${{ secrets.SERVICE_CONFIGS_KEY }}
           ref: master
           path: service-configs
-#          sparse-checkout: |
-#            ${{ env.CONFIG_FILE }}
-#          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            ${{ env.CONFIG_FILE }}
+          sparse-checkout-cone-mode: false
 
       - name: "Debug 2"
         run: |
