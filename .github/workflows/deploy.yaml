@@ -4,15 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Version (Tag)'
+        description: "Version (Tag)"
         required: false
-        default: 'latest'
+        default: "latest"
   repository_dispatch:
     types:
       - webhook
-#  release:
-#    types:
-#      - published
 
 env:
   VERSION: ${{ inputs.tag || 'latest' }}
