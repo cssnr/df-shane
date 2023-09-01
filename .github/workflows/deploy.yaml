@@ -15,7 +15,7 @@ on:
 #      - published
 
 env:
-  VERSION: ${{ inputs.tag || "latest" }}
+  VERSION: ${{ inputs.tag || 'latest' }}
   STACK_NAME: ${{ vars.STACK_NAME }}
   STACK_FILE: "docker-compose-swarm.yaml"
   CONFIG_FILE: ${{ vars.CONFIG_FILE }}
