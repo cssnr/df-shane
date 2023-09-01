@@ -2,6 +2,12 @@ name: "Docker Stack Deploy"
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types:
+      - webhook
+#  release:
+#    types:
+#      - published
 #    inputs:
 #      tags:
 #        description: 'Tags: comma,separated'
