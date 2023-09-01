@@ -31,6 +31,12 @@ jobs:
           sparse-checkout-cone-mode: false
           ssh-key: ${{ secrets.SERVICE_CONFIGS_KEY }}
 
+      - name: "Debug"
+        run: |
+          ls -lah
+          echo -----
+          ls -lah service-configs
+
       - name: "Docker Stack Deploy"
         uses: cssnr/stack-deploy-action@master
         env:
