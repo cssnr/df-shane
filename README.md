@@ -1,5 +1,13 @@
 # Django Files Swarm Deploy
 
+> **Note**
+>
+> This repository is designed to be forked and kept up to date.
+> 
+> DO NOT MODIFY FILES IN THIS REPOSITORY.
+> 
+> Everything is configured through Actions Variables and Secrets.
+
 To deploy: [https://github.com/django-files/django-files](https://github.com/django-files/django-files)
 
 ## Variables and Secrets
