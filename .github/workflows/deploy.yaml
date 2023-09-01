@@ -51,15 +51,15 @@ jobs:
             ${{ env.CONFIG_FILE }}
           sparse-checkout-cone-mode: false
 
-#      - name: "Docker Stack Deploy"
-#        uses: cssnr/stack-deploy-action@master
-#        env:
-#          ENV_FILE: "service-configs/${{ env.CONFIG_FILE }}"
-#        with:
-#          host: ${{ secrets.DOCKER_HOST }}
-#          user: ${{ secrets.DOCKER_USER }}
-#          port: ${{ secrets.DOCKER_PORT }}
-#          name: ${{ env.STACK_NAME }}
-#          file: ${{ env.STACK_FILE }}
-#          env_file: ${{ env.ENV_FILE }}
-#          ssh_key: "${{ secrets.DOCKER_SSH_KEY }}"
+      - name: "Docker Stack Deploy"
+        uses: cssnr/stack-deploy-action@master
+        env:
+          ENV_FILE: "service-configs/${{ env.CONFIG_FILE }}"
+        with:
+          host: ${{ secrets.DOCKER_HOST }}
+          user: ${{ secrets.DOCKER_USER }}
+          port: ${{ secrets.DOCKER_PORT }}
+          name: ${{ env.STACK_NAME }}
+          file: ${{ env.STACK_FILE }}
+          env_file: ${{ env.ENV_FILE }}
+          ssh_key: "${{ secrets.DOCKER_SSH_KEY }}"
