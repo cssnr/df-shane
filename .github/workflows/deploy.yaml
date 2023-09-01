@@ -2,21 +2,20 @@ name: "Docker Stack Deploy"
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Version (Tag)"
+        required: false
+        default: "latest"
   repository_dispatch:
     types:
       - webhook
-#  release:
-#    types:
-#      - published
-#    inputs:
-#      tags:
-#        description: 'Tags: comma,separated'
-#        required: true
-#        default: 'latest'
 
 env:
-  CONFIG_FILE: ${{ vars.CONFIG_FILE }}
+  VERSION: ${{ inputs.tag || 'latest' }}
   STACK_NAME: ${{ vars.STACK_NAME }}
+  STACK_FILE: docker-compose-swarm.yaml
+  CONFIG_FILE: ${{ vars.CONFIG_FILE }}
 
 jobs:
   deploy:
@@ -28,6 +27,19 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v3
 
+      - name: "Find and Replace Stack Name"
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: "STACK_NAME"
+          replace: ${{ env.STACK_NAME}}
+          include: ${{ env.STACK_FILE}}
+          regex: false
+
+      - name: "Debug "
+        run: |
+          env
+          cat ${{ env.STACK_FILE}}
+
       - name: "Checkout Service Configs"
         uses: actions/checkout@v3
         with:
@@ -35,9 +47,9 @@ jobs:
           ssh-key: ${{ secrets.SERVICE_CONFIGS_KEY }}
           ref: master
           path: service-configs
-#          sparse-checkout: |
-#            ${{ env.CONFIG_FILE }}
-#          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            ${{ env.CONFIG_FILE }}
+          sparse-checkout-cone-mode: false
 
       - name: "Docker Stack Deploy"
         uses: cssnr/stack-deploy-action@master
@@ -47,7 +59,7 @@ jobs:
           host: ${{ secrets.DOCKER_HOST }}
           user: ${{ secrets.DOCKER_USER }}
           port: ${{ secrets.DOCKER_PORT }}
-          name: "${{ env.STACK_NAME }}"
-          file: "docker-compose-swarm.yaml"
-          env_file: "${{ env.ENV_FILE }}"
+          name: ${{ env.STACK_NAME }}
+          file: ${{ env.STACK_FILE }}
+          env_file: ${{ env.ENV_FILE }}
           ssh_key: "${{ secrets.DOCKER_SSH_KEY }}"
