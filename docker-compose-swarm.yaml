@@ -3,7 +3,7 @@ version: '3.7'
 services:
   django-files:
     image: ghcr.io/django-files/django-files:${VERSION:?err}
-    env_file: ${ENV_FILE}
+    env_file: ${ENV_FILE:?err}
     deploy:
       mode: global
       labels:
