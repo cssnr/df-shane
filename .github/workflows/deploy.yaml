@@ -9,7 +9,7 @@ on:
 #        default: 'latest'
 
 env:
-  ENV_FILE: "services/shane/df-shane/df.cssnr.env"
+  CONFIG_FILE: "services/shane/df-shane/df.cssnr.env"
 
 jobs:
   deploy:
@@ -27,12 +27,14 @@ jobs:
           repository: hosted-domains/service-configs
           ref: master
           path: service-configs
-          sparse-checkout: ${ENV_FILE}
+          sparse-checkout: ${CONFIG_FILE}
           sparse-checkout-cone-mode: false
           ssh-key: ${{ secrets.SERVICE_CONFIGS_KEY }}
 
       - name: "Docker Stack Deploy"
         uses: cssnr/stack-deploy-action@master
+        env:
+          ENV_FILE: "service-configs/${{ env.CONFIG_FILE }}"
         with:
           host: ${{ secrets.DOCKER_HOST }}
           user: ${{ secrets.DOCKER_USER }}
@@ -40,4 +42,4 @@ jobs:
           port: ${{ secrets.DOCKER_PORT }}
           name: "df-shane"
           file: "docker-compose-swarm.yaml"
-          env_file: "service-configs/${ENV_FILE}"
+          env_file: "${{ env.ENV_FILE }}"
