@@ -15,7 +15,7 @@ on:
 #        default: 'latest'
 
 env:
-  CONFIG_FILE: "services/shane/df-shane/df.cssnr.env"
+  CONFIG_FILE: ${{ vars.CONFIG_FILE }}
 
 jobs:
   deploy:
@@ -37,22 +37,6 @@ jobs:
 #          sparse-checkout: |
 #            ${{ env.CONFIG_FILE }}
 #          sparse-checkout-cone-mode: false
-
-#      - name: "Checkout Service Configs"
-#        uses: actions/checkout@v3
-#        with:
-#          repository: hosted-domains/service-configs
-#          ref: master
-#          path: service-configs
-#          sparse-checkout: ${CONFIG_FILE}
-#          sparse-checkout-cone-mode: false
-#          ssh-key: ${{ secrets.SERVICE_CONFIGS_KEY }}
-
-      - name: "Debug"
-        run: |
-          ls -lAh
-          echo -----
-          ls -lARh service-configs
 
       - name: "Docker Stack Deploy"
         uses: cssnr/stack-deploy-action@master
