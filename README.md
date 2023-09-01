@@ -8,13 +8,13 @@ You must have the following Variables and Secrets configured for your repository
 
 | Variable            | Type     | Description                                |
 |---------------------|----------|--------------------------------------------|
-| STACK_NAME          | Secret   | Name of Stack in Docker                    |
-| CONFIG_FILE         | Secret   | Location of Config file in Service Configs |
-| SERVICE_CONFIGS_KEY | Variable | SSH Key for Service Configs repo           |
-| DOCKER_SSH_KEY      | Variable | Docker SSH Key                             |
-| DOCKER_HOST         | Variable | Docker Hostname                            |
-| DOCKER_USER         | Variable | Docker Username                            |
-| DOCKER_PORT         | Variable | Docker Port                                |
+| STACK_NAME          | Variable | Name of Stack in Docker                    |
+| CONFIG_FILE         | Variable | Location of Config file in Service Configs |
+| SERVICE_CONFIGS_KEY | Secret   | SSH Key for Service Configs repo           |
+| DOCKER_SSH_KEY      | Secret   | Docker SSH Key                             |
+| DOCKER_HOST         | Secret   | Docker Hostname                            |
+| DOCKER_USER         | Secret   | Docker Username                            |
+| DOCKER_PORT         | Secret   | Docker Port                                |
 
 ### Setup
 
