@@ -24,13 +24,13 @@ jobs:
       - name: "Checkout Service Configs"
         uses: actions/checkout@v3
         with:
-          repository: ${{ env.SERVICE_CONFIGS }}
+          repository: "hosted-domains/service-configs"
+          ssh-key: ${{ secrets.SERVICE_CONFIGS_KEY }}
           ref: master
           path: service-configs
-          sparse-checkout: |
-            ${{ env.CONFIG_FILE }}
-          sparse-checkout-cone-mode: false
-          ssh-key: ${{ secrets.SERVICE_CONFIGS_KEY }}
+#          sparse-checkout: |
+#            ${{ env.CONFIG_FILE }}
+#          sparse-checkout-cone-mode: false
 
 #      - name: "Checkout Service Configs"
 #        uses: actions/checkout@v3
@@ -44,9 +44,9 @@ jobs:
 
       - name: "Debug"
         run: |
-          ls -lah
+          ls -lAh
           echo -----
-          ls -laRh service-configs
+          ls -lARh service-configs
 
       - name: "Docker Stack Deploy"
         uses: cssnr/stack-deploy-action@master
