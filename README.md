@@ -12,7 +12,8 @@ To deploy: [https://github.com/django-files/django-files](https://github.com/dja
 
 ## Variables and Secrets
 
-You must have the following Variables and Secrets configured for your repository/org for this to work.
+You must have the following Variables and Secrets configured for your repository/org for this to work. 
+The Secrets can be global for your organization but the Variables are specific to each repository.
 
 | Variable            | Type     | Description                                |
 |---------------------|----------|--------------------------------------------|
