@@ -16,6 +16,7 @@ on:
 
 env:
   CONFIG_FILE: ${{ vars.CONFIG_FILE }}
+  STACK_NAME: ${{ vars.STACK_NAME }}
 
 jobs:
   deploy:
@@ -45,9 +46,8 @@ jobs:
         with:
           host: ${{ secrets.DOCKER_HOST }}
           user: ${{ secrets.DOCKER_USER }}
-          pass: ${{ secrets.DOCKER_PASS }}
           port: ${{ secrets.DOCKER_PORT }}
-          name: "df-shane"
+          name: "${{ env.STACK_NAME }}"
           file: "docker-compose-swarm.yaml"
           env_file: "${{ env.ENV_FILE }}"
           ssh_key: "${{ secrets.DOCKER_SSH_KEY }}"
