@@ -17,7 +17,7 @@ on:
 env:
   VERSION: ${{ inputs.tag || 'latest' }}
   STACK_NAME: ${{ vars.STACK_NAME }}
-  STACK_FILE: "docker-compose-swarm.yaml"
+  STACK_FILE: docker-compose-swarm.yaml
   CONFIG_FILE: ${{ vars.CONFIG_FILE }}
 
 jobs:
@@ -30,18 +30,18 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v3
 
-      - name: "Find and Replace"
+      - name: "Find and Replace Stack Name"
         uses: jacobtomlinson/gha-find-replace@v3
         with:
           find: "STACK_NAME"
-          replace: "${{ env.STACK_NAME}}"
+          replace: ${{ env.STACK_NAME}}
+          include: ${{ env.STACK_FILE}}
           regex: false
 
-      - name: "Debug 1"
+      - name: "Debug "
         run: |
-          echo env.VERSION: "${{ env.VERSION }}"
-          echo "--- stack file ---"
-          cat "${{ env.STACK_FILE }}"
+          env
+          cat ${{ env.STACK_FILE}}
 
       - name: "Checkout Service Configs"
         uses: actions/checkout@v3
@@ -54,12 +54,6 @@ jobs:
             ${{ env.CONFIG_FILE }}
           sparse-checkout-cone-mode: false
 
-      - name: "Debug 2"
-        run: |
-          ls -lAh service-configs
-          ls -lAh service-configs/services
-          stat service-configs/${{ env.CONFIG_FILE }}
-
 #      - name: "Docker Stack Deploy"
 #        uses: cssnr/stack-deploy-action@master
 #        env:
@@ -68,7 +62,7 @@ jobs:
 #          host: ${{ secrets.DOCKER_HOST }}
 #          user: ${{ secrets.DOCKER_USER }}
 #          port: ${{ secrets.DOCKER_PORT }}
-#          name: "${{ env.STACK_NAME }}"
-#          file: "${{ env.STACK_FILE }}"
-#          env_file: "${{ env.ENV_FILE }}"
+#          name: ${{ env.STACK_NAME }}
+#          file: ${{ env.STACK_FILE }}
+#          env_file: ${{ env.ENV_FILE }}
 #          ssh_key: "${{ secrets.DOCKER_SSH_KEY }}"
