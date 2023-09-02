@@ -15,6 +15,8 @@ To deploy: [https://github.com/django-files/django-files](https://github.com/dja
 You must have the following Variables and Secrets configured for your repository/org for this to work. 
 The Secrets can be global for your organization but the Variables are specific to each repository.
 
+### Required
+
 | Variable            | Type     | Description                                |
 |---------------------|----------|--------------------------------------------|
 | STACK_NAME          | Variable | Name of Stack in Docker                    |
@@ -24,6 +26,13 @@ The Secrets can be global for your organization but the Variables are specific t
 | DOCKER_HOST         | Secret   | Docker Hostname                            |
 | DOCKER_USER         | Secret   | Docker Username                            |
 | DOCKER_PORT         | Secret   | Docker Port                                |
+
+### Optional
+
+| Variable             | Type     | Description                           |
+|----------------------|----------|---------------------------------------|
+| ZONE_NAME            | Variable | Name of Zone to Purge in Cloudflare   |
+| CLOUDFLARE_API_TOKEN | Secret   | Cloudflare API Token with Purge Perms |
 
 ### Setup
 

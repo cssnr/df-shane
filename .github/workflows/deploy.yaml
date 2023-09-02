@@ -63,3 +63,10 @@ jobs:
           file: ${{ env.STACK_FILE }}
           env_file: ${{ env.ENV_FILE }}
           ssh_key: "${{ secrets.DOCKER_SSH_KEY }}"
+
+      - name: "Purge Cache"
+        uses: cssnr/cf-purge-cache-action@master
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN && vars.ZONE_NAME }}
+        with:
+          zone: ${{ vars.ZONE_NAME }}
+          token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
