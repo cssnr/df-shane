@@ -13,37 +13,37 @@ env:
   STACK_NAME: ${{ vars.STACK_NAME }}
   STACK_FILE: docker-compose-swarm.yaml
   CONFIG_FILE: ${{ vars.CONFIG_FILE }}
+  #ZONE_NAME: cssnr.com
 
 jobs:
   deploy:
     name: "Deploy"
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
 
     steps:
       - name: "Checkout"
         uses: actions/checkout@v7
 
-      - name: "Find and Replace"
-        uses: jacobtomlinson/gha-find-replace@v3
-        with:
-          find: "STACK_NAME"
-          replace: ${{ env.STACK_NAME }}
-          include: ${{ env.STACK_FILE }}
-          regex: false
+      #- name: "Find and Replace"
+      #  uses: jacobtomlinson/gha-find-replace@v3
+      #  with:
+      #    find: "STACK_NAME"
+      #    replace: ${{ env.STACK_NAME }}
+      #    include: ${{ env.STACK_FILE }}
+      #    regex: false
 
-      - name: "Debug"
-        run: |
-          echo "inputs.tag: ${{ inputs.tag }}"
-          echo "env.VERSION: ${{ env.VERSION }}"
-          
-          echo "::group::env"
-          env
-          echo "::endgroup::"
-
-          echo "::group::${{ env.STACK_FILE }}"
-          cat ${{ env.STACK_FILE }}
-          echo "::endgroup::"
+      - name: "Debug event.json"
+        continue-on-error: true
+        run: cat "${GITHUB_EVENT_PATH}"
+      - name: "Debug CTX github"
+        continue-on-error: true
+        env:
+          GITHUB_CTX: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CTX"
+      - name: "Debug Environment"
+        continue-on-error: true
+        run: env
 
       - name: "Checkout Service Configs"
         uses: actions/checkout@v7
@@ -56,18 +56,35 @@ jobs:
             ${{ env.CONFIG_FILE }}
           sparse-checkout-cone-mode: false
 
-      - name: "Docker Stack Deploy"
-        uses: cssnr/stack-deploy-action@v1
+      #- name: "Docker Stack Deploy"
+      #  uses: cssnr/stack-deploy-action@v1
+      #  env:
+      #    ENV_FILE: "service-configs/${{ env.CONFIG_FILE }}"
+      #  with:
+      #    host: ${{ secrets.DOCKER_HOST }}
+      #    user: ${{ secrets.DOCKER_USER }}
+      #    port: ${{ secrets.DOCKER_PORT }}
+      #    name: ${{ env.STACK_NAME }}
+      #    file: ${{ env.STACK_FILE }}
+      #    env_file: ${{ env.ENV_FILE }}
+      #    ssh_key: "${{ secrets.DOCKER_SSH_KEY }}"
+
+      - name: "Portainer Deploy"
+        uses: cssnr/portainer-stack-deploy-action@v2
         env:
-          ENV_FILE: "service-configs/${{ env.CONFIG_FILE }}"
+          version: ${{ env.version == 'master' && 'latest' || env.version }}
         with:
-          host: ${{ secrets.DOCKER_HOST }}
-          user: ${{ secrets.DOCKER_USER }}
-          port: ${{ secrets.DOCKER_PORT }}
-          name: ${{ env.STACK_NAME }}
+          url: ${{ secrets.PORTAINER_URL }}
+          token: ${{ secrets.PORTAINER_TOKEN }}
           file: ${{ env.STACK_FILE }}
-          env_file: ${{ env.ENV_FILE }}
-          ssh_key: "${{ secrets.DOCKER_SSH_KEY }}"
+          name: ${{ env.STACK_NAME }}
+          username: ${{ vars.GHCR_USER }}
+          password: ${{ secrets.GHCR_PASS }}
+          env_file: "service-configs/${{ env.CONFIG_FILE }}"
+          type: file
+          env_data: |
+            VERSION: "${{ env.version }}"
+            STACK_NAME: "${{ env.STACK_NAME }}"
 
       - name: "Purge Cache"
         uses: cssnr/cloudflare-purge-cache-action@v2

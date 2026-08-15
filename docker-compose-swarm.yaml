@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.8"
 
 services:
   django-files:
@@ -12,16 +12,11 @@ services:
           memory: 2G
       labels:
         - "traefik.enable=true"
-        - "traefik.docker.network=traefik-public"
-        - "traefik.constraint-label=traefik-public"
-        - "traefik.http.routers.STACK_NAME-http.rule=Host(`${TRAEFIK_HOST:?err}`)"
-        - "traefik.http.routers.STACK_NAME-http.entrypoints=http"
-        - "traefik.http.routers.STACK_NAME-http.middlewares=https-redirect"
-        - "traefik.http.routers.STACK_NAME-https.rule=Host(`${TRAEFIK_HOST:?err}`)"
-        - "traefik.http.routers.STACK_NAME-https.entrypoints=https"
-        - "traefik.http.routers.STACK_NAME-https.tls=true"
-        - "traefik.http.services.STACK_NAME.loadbalancer.server.port=80"
-        - "traefik.http.services.STACK_NAME.loadbalancer.server.scheme=http"
+        - "traefik.http.routers.${STACK_NAME?err}.rule=Host(`${TRAEFIK_HOST?err}`)"
+        - "traefik.http.routers.${STACK_NAME}.entrypoints=https"
+        - "traefik.http.routers.${STACK_NAME}.tls=true"
+        - "traefik.http.services.${STACK_NAME}.loadbalancer.server.port=80"
+        #- "traefik.http.routers.${STACK_NAME}.tls.certresolver=le"
     volumes:
       - media_dir:/data/media
     networks:
